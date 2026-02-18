@@ -1,0 +1,50 @@
+# =========================
+# Terraform (Azure Infrastructure)
+# =========================
+.terraform/
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+terraform.tfvars
+*.auto.tfvars
+.terraform.lock.hcl
+
+# =========================
+# Ansible
+# =========================
+*.retry
+
+# =========================
+# Docker
+# =========================
+*.log
+*.local
+
+# =========================
+# Node / Application (if used)
+# =========================
+node_modules/
+app/node_modules/
+npm-debug.log*
+yarn.lock
+
+# =========================
+# Secrets / Keys (NEVER COMMIT)
+# =========================
+*.pem
+*.key
+*.pub
+
+# =========================
+# OS / Editor files
+# =========================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
