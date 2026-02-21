@@ -1,0 +1,57 @@
+---
+- name: Configure Azure VM and install Docker
+  hosts: azure_vm
+  become: true
+
+  tasks:
+    - name: Update apt package index
+      apt:
+        update_cache: yes
+
+    - name: Install required packages
+      apt:
+        name:
+          - ca-certificates
+          - curl
+          - gnupg
+          - lsb-release
+        state: present
+
+    - name: Add Docker GPG key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker repository
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable
+        state: present
+
+    - name: Install Docker CE
+      apt:
+        name: docker-ce
+        state: latest
+        update_cache: yes
+
+    - name: Start Docker service
+      service:
+        name: docker
+        state: started
+        enabled: true
+
+    - name: Add user to docker group
+      user:
+        name: azureuser
+        groups: docker
+        append: yes
+
+    - name: Pull Hello World Docker image
+      community.docker.docker_image:
+        name: hello-world
+        source: pull
+
+    - name: Run Hello World container
+      community.docker.docker_container:
+        name: hello-world
+        image: hello-world
+        state: started

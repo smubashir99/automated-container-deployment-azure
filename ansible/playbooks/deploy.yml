@@ -1,0 +1,88 @@
+---
+- name: Deploy Docker Container on Azure VM
+  hosts: azure_vm
+  become: true
+
+  vars:
+    app_dir: /home/azureuser/app
+    container_name: myapp-container
+    image_name: myapp-image
+    starting_port: 8080
+    container_port: 80
+    app_src: "/mnt/d/DBS/MS Course/NETWORKS AND SYSTEMS ADMINISTRATION/CA One/automated-container-deployment-azure/app/"
+
+  tasks:
+
+    - name: Ensure app directory exists on VM
+      ansible.builtin.file:
+        path: "{{ app_dir }}"
+        state: directory
+        owner: azureuser
+        group: azureuser
+        mode: "0755"
+
+    - name: Copy app files to VM
+      ansible.builtin.copy:
+        src: "{{ app_src }}"
+        dest: "{{ app_dir }}/"
+        owner: azureuser
+        group: azureuser
+        mode: "0644"
+
+    - name: Ensure Docker container is stopped and removed
+      community.docker.docker_container:
+        name: "{{ container_name }}"
+        state: absent
+        force_kill: true
+        cleanup: yes
+
+    - name: Ensure old image is removed
+      community.docker.docker_image:
+        name: "{{ image_name }}"
+        state: absent
+        force_absent: true
+
+    - name: Build Docker image from app folder
+      community.docker.docker_image_build:
+        path: "{{ app_dir }}"
+        dockerfile: Dockerfile
+        name: "{{ image_name }}"
+
+    - name: Find a free host port starting from {{ starting_port }}
+      ansible.builtin.shell: |
+        port={{ starting_port }}
+        while ss -tuln | grep -q ":$port "; do
+          port=$((port + 1))
+        done
+        echo $port
+      register: free_port
+      changed_when: false
+
+    - name: Set chosen host port
+      set_fact:
+        host_port: "{{ free_port.stdout }}"
+
+    - name: Start Docker container
+      community.docker.docker_container:
+        name: "{{ container_name }}"
+        image: "{{ image_name }}"
+        state: started
+        restart: yes
+        ports:
+          - "{{ host_port }}:{{ container_port }}"
+
+    - name: Ensure firewall allows chosen host port
+      ansible.builtin.shell: |
+        if ! sudo ufw status | grep -q "{{ host_port }}"; then
+          sudo ufw allow {{ host_port }}
+        fi
+
+    - name: Ensure Docker service is running
+      ansible.builtin.service:
+        name: docker
+        state: started
+        enabled: true
+
+    - name: Show URL for accessing app
+      ansible.builtin.debug:
+        msg: "App should be accessible at http://{{ ansible_host }}:{{ host_port }}"
