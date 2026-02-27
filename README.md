@@ -1,92 +1,86 @@
- Automated Container Deployment on Microsoft Azure
+# Automated Container Deployment on Microsoft Azure
 
- Module: Networks and Systems Administration
- Student: Syed Mubashir Ahmed Hashmi
- Student ID: 20089221
+**Module:** Networks and Systems Administration  
+**Student:** Syed Mubashir Ahmed Hashmi  
+**Student ID:** 20089221  
 
-Project Title
+---
 
-Automated Cloud Infrastructure Deployment using Terraform, Ansible, and Docker on Microsoft Azure
+## Project Title
 
-Project Goal
+**Automated Cloud Infrastructure Deployment using Terraform, Ansible, and Docker on Microsoft Azure**
+
+---
+
+## Project Goal
 
 Build a complete cloud automation pipeline that automatically:
 
-Creates infrastructure
+- Creates infrastructure
+- Configures a virtual machine
+- Deploys a containerized web application
+- Makes the application accessible in a browser
 
-Configures a virtual machine
+All processes are fully automated using **Infrastructure as Code** and **configuration management**.
 
-Deploys a containerized web application
+---
 
-Makes the application accessible in a browser
+## Overview
 
-All processes are fully automated using Infrastructure as Code and configuration management.
+This project demonstrates a real-world cloud automation system that provisions infrastructure, configures a server, and deploys a web application automatically on Microsoft Azure.  
 
-Overview
+The entire setup was completed on a **Windows environment** using free and open-source tools including:
 
-This project demonstrates a real-world cloud automation system that provisions infrastructure, configures a server, and deploys a web application automatically on Microsoft Azure.
+- Terraform
+- Ansible
+- Docker
+- Node.js
+- Azure CLI
+- GitHub
 
-The entire setup was completed on a Windows environment using free and open-source tools including:
+The system eliminates manual setup and ensures **consistent, repeatable deployments**.
 
-Terraform
+---
 
-Ansible
-
-Docker
-
-Node.js
-
-Azure CLI
-
-GitHub
-
-The system eliminates manual setup and ensures consistent, repeatable deployments.
-
-Automation Pipeline
+## Automation Pipeline
 
 Windows Machine → Terraform → Azure Virtual Machine → Ansible → Docker Container → Browser
 
-Tools and Purpose
-Terraform
+---
 
+## Tools and Purpose
+
+### Terraform
 Creates Azure infrastructure including:
 
-Resource Group
+- Resource Group
+- Virtual Network
+- Subnet
+- Network Security Group
+- Public IP
+- Linux Virtual Machine
 
-Virtual Network
-
-Subnet
-
-Network Security Group
-
-Public IP
-
-Linux Virtual Machine
-
-Ansible
-
+### Ansible
 Connects to the Azure virtual machine via SSH and:
 
-Installs Docker
+- Installs Docker
+- Configures system packages
+- Deploys application container
 
-Configures system packages
+### Docker + Node.js
+Runs the web application inside a **lightweight containerized environment**, ensuring consistent runtime across deployments.
 
-Deploys application container
-
-Docker + Node.js
-
-Runs the web application inside a lightweight containerized environment and ensures consistent runtime across deployments.
-
-Azure CLI
-
+### Azure CLI
 Authenticates with Azure and allows Terraform to interact with cloud resources.
 
-Git and GitHub
-
+### Git and GitHub
 Used for version control, project storage, and tracking deployment changes.
 
- Step-by-Step Setup and Commands
-1️ Generate SSH Key (Windows PowerShell)
+---
+
+## Step-by-Step Setup and Commands
+
+### 1️ Generate SSH Key (Windows PowerShell)
 
 This key allows secure connection to the Azure virtual machine.
 
@@ -94,7 +88,7 @@ ssh-keygen -t rsa -b 4096
 
 Public key is used by Terraform for VM access.
 
-2️ Login to Azure
+### 2️ Login to Azure
 
 Authenticate your Azure account.
 
@@ -102,7 +96,7 @@ az login
 
 Browser will open → login successful.
 
-3️ Terraform — Build Infrastructure
+### 3️ Terraform — Build Infrastructure
 
 Navigate to Terraform directory:
 
@@ -125,13 +119,13 @@ View created resources:
 terraform show
 terraform state list
 
-4️ Connect to Virtual Machine
+### 4️ Connect to Virtual Machine
 
 Use public IP from Terraform output.
 
 ssh azureuser@20.100.182.186
 
-5️  Ansible — Configure Server
+### 5️  Ansible — Configure Server
 
 Check connection:
 
@@ -141,7 +135,7 @@ Run playbook to install Docker and deploy container:
 
 ansible-playbook -i inventory.ini playbook.yml
 
-6️  Docker Application
+### 6️  Docker Application
 
 Verify container running:
 
@@ -151,7 +145,7 @@ Test web application locally on VM:
 
 curl http://localhost
 
-Live Application
+### Live Application
 
 Access the deployed web application here:
 
@@ -159,7 +153,7 @@ Access the deployed web application here:
 
 The website is deployed automatically through full cloud automation.
 
-Verification Commands (For Demonstration)
+## Verification Commands (For Demonstration)
 
 Terraform Resources
 terraform state list
@@ -171,7 +165,7 @@ docker ps
 Application Response
 curl http://localhost
 
-Key Features
+## Key Features
 
 ✔ Infrastructure as Code
 ✔ Automated server configuration
@@ -181,7 +175,7 @@ Key Features
 ✔ Fully repeatable deployment
 ✔ No manual configuration
 
-Learning Outcomes
+## Learning Outcomes
 
 This project demonstrates practical understanding of:
 
@@ -197,7 +191,7 @@ DevOps workflow
 
 Azure cloud services
 
-Conclusion
+## Conclusion
 
 This project successfully implemented an end-to-end automated cloud deployment pipeline on Microsoft Azure.
 
@@ -205,7 +199,7 @@ Infrastructure provisioning, system configuration, and application deployment we
 
 The system ensures consistent, reliable, and repeatable cloud deployments without manual intervention.
 
-Author
+## Author
 
 Syed Mubashir Ahmed Hashmi
 MSc Information Systems
