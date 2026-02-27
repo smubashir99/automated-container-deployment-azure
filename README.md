@@ -202,4 +202,3 @@ The system ensures consistent, reliable, and repeatable cloud deployments withou
 ## Author
 
 Syed Mubashir Ahmed Hashmi
-MSc Information Systems
