@@ -39,12 +39,4 @@ flowchart LR
   VM[(Azure Virtual Machine)]
   User[Browser]
 
-  Dev -- "git push" --> Repo
-  Repo -- triggers --> GH
-  GH -- deploy via SSH --> VM
-  TF -- creates --> VM
-  User -- "http://Public_IP" --> VM
-
-  subgraph Azure Cloud
-    VM
-  end
+  Dev -- "git push" --> 
